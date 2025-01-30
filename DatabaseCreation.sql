@@ -1,18 +1,32 @@
 CREATE DATABASE eventDatabase;
 USE eventDatabase;
-CREATE TABLE Event
-(
-    EventID INT NOT NULL AUTO_INCREMENT,
-    Name VARCHAR(255) NOT NULL,
-    Date DATE,
-    LocationID int,
-    PRIMARY KEY (EventID),
-    FOREIGN KEY (LocationID) REFERENCES Venue(LocationID)
-);
 CREATE TABLE Venue
 (
-    LocationID INT NOT NULL AUTO_INCREMENT,
+    LocationID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     Name VARCHAR(255) NOT NULL,
-    Address VARCHAR(255) NOT NULL,
-    PRIMARY KEY (LocationID)
+    Address VARCHAR(255) NOT NULL
+);
+CREATE TABLE Events
+(
+    EventID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    Name VARCHAR(255) NOT NULL,
+    EventDate DATETIME NOT NULL,
+    LocationID int,
+    FOREIGN KEY (LocationID) REFERENCES Venue(LocationID) ON DELETE SET NULL
+);
+CREATE TABLE Attendants
+(
+    AttendantID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    Name VARCHAR(255) NOT NULL,
+    Email VARCHAR(255) NOT NULL UNIQUE,
+    Address VARCHAR(255)
+);
+CREATE TABLE Tickets
+(
+    TicketID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    Price DECIMAL(10,2),
+    EventID int,
+    AttendantID int,
+    FOREIGN KEY (EventID) REFERENCES Events(EventID) ON DELETE CASCADE,
+    FOREIGN KEY (AttendantID) REFERENCES Attendants(AttendantID) ON DELETE CASCADE
 );
